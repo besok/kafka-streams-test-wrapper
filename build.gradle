@@ -1,0 +1,75 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.2.RELEASE'
+        modelMapperVersion = '2.0.0'
+    }
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        jcenter()
+
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+
+
+group = 'ru.gpb.als.streams'
+version = '0.1'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    jcenter()
+    maven {
+        url 'https://packages.confluent.io/maven/'
+    }
+    maven { url "https://repo.spring.io/snapshot" }
+    maven { url "https://repo.spring.io/milestone" }
+    maven { url "https://nexus.4digi.ru/repository/maven-releases/"}
+}
+
+
+
+dependencies {
+
+    compile ('org.springframework.boot:spring-boot-starter:2.0.4.RELEASE')
+
+
+    compile('joda-time:joda-time:2.8.1')
+    compile('ru.gpb.als.model.streams:model-streams:0.1')
+
+    compile("io.confluent:kafka-schema-registry-client:4.1.1")
+    compile("io.confluent:kafka-avro-serializer:4.1.1")
+    compile("io.confluent:kafka-streams-avro-serde:4.1.1")
+    compile("org.apache.kafka:kafka-clients:2.0.0")
+    compile("org.apache.kafka:kafka-streams:2.0.0")
+    compile("org.apache.kafka:kafka-streams-test-utils:2.0.0")
+    compile('org.springframework.boot:spring-boot-starter-test')
+
+    compileOnly('org.projectlombok:lombok')
+
+
+
+    //resolve deps
+    compile('log4j:log4j:1.2.17')
+}
+
+jar {
+    enabled = true
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud.stream.app:app-starters-core-dependencies:2.0.1.RELEASE"
+    }
+}
