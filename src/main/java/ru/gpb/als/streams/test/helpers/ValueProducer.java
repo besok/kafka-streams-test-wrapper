@@ -2,6 +2,10 @@ package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
 
+import java.util.Objects;
+
+import static java.util.Objects.*;
+
 /**
  * Functional interface for new objects generating.
  * @param <V> type for generating object.
@@ -13,10 +17,7 @@ public interface ValueProducer<V> {
   @SuppressWarnings("unchecked")
   default Class<V> getValClass() {
     V v = produce();
-    if (v == null)
-      return (Class<V>) SpecificRecord.class;
-    else
-      return (Class<V>) v.getClass();
+    return (Class<V>)(isNull(v)? SpecificRecord.class:v.getClass());
   }
 
   ValueProducer<SpecificRecord> NULL_PRODUCER = ()->null;
