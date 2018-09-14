@@ -101,13 +101,12 @@ public class StreamsTestHelperContext {
 
   /**
    * generate new keeper @see {@link KeyValueStoreHandler}
-   * @param topic topic name
+   *
+   * @param topic   topic name
    * @param keyType key type
    * @param valType val type
-   *
    * @return KeyValueStoreHandler
-   *
-   * **/
+   **/
   public <K extends SpecificRecord, V extends SpecificRecord> KeyValueStoreHandler<K, V> keeper(String topic, Class<K> keyType, Class<V> valType) {
     this.latestKeeper = new KeyValueStoreHandler<>(topic, keyType, valType, this);
     return this.latestKeeper;
@@ -116,27 +115,26 @@ public class StreamsTestHelperContext {
   /**
    * generate new keeper @see {@link KeyValueStoreHandler} .
    * this keeper will be generated  by information getting from prev sender.
-   * @param topic topic name
-   * @param keyType key type
-   * @param valType val type
    *
    * @return KeyValueStoreHandler
    * @throws IllegalStateException
-   * **/
+   **/
   public <K extends SpecificRecord, V extends SpecificRecord> KeyValueStoreHandler<K, V> keeper() {
     checkForGenerating(this.latestSender);
-    this.latestKeeper = new KeyValueStoreHandler<>(
-        latestSender.getTopic(),
-        latestSender.getKeyProducer().getValClass(),
-        latestSender.getValProducer().getValClass(),
-        this);
+    Class<K> keyClass = latestSender.getKeyProducer().getValClass();
+    Class<V> valClass = latestSender.getValProducer().getValClass();
+    this.latestKeeper = new KeyValueStoreHandler<>(latestSender.getTopic(), keyClass, valClass, this);
     return this.latestKeeper;
   }
 
 
-  private void checkForGenerating(Object o){
-    if(Objects.isNull(o))
+  private void checkForGenerating(Object o) {
+    if (Objects.isNull(o))
       throw new IllegalStateException("impossible generate new entity because there isn't previous state operation, for example [.sender(...)]");
+  }
+
+  public void close() {
+    driver.close();
   }
 
 }

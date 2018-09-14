@@ -18,4 +18,6 @@ public interface ValueProducer<V> {
     else
       return (Class<V>) v.getClass();
   }
+
+  ValueProducer<SpecificRecord> NULL_PRODUCER = ()->null;
 }
