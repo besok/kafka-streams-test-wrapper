@@ -59,12 +59,15 @@ public class KeyValueStoreHandler<K extends SpecificRecord, V extends SpecificRe
    * @return Optional
    */
   // TODO: 9/11/2018 Если у нас несколько сторов в стриме с 1 типом KV
-  // FIXME: 9/14/2018 Неверная логика поиска стора
   public Optional<V> find(K key) {
     return findFirstStore().map(s -> s.get(key));
   }
 
-  public Optional<KeyValueIterator<K,V>> iterator(){
+  public Optional<V> find(K key, String store) {
+    return Optional.ofNullable(ctx.driver.<K, V>getKeyValueStore(store).get(key));
+  }
+
+  public Optional<KeyValueIterator<K, V>> iterator() {
     return findFirstStore().map(ReadOnlyKeyValueStore::all);
   }
 
@@ -76,23 +79,24 @@ public class KeyValueStoreHandler<K extends SpecificRecord, V extends SpecificRe
   }
 
 
-  // FIXME: 9/14/2018 NPE!!!
-  public KeyValueStoreHandler<K, V> put(K k,V v) {
-    findFirstStore().ifPresent(s->s.put(k,v));
+  // FIXME: 9/14/2018 NPE!
+  public KeyValueStoreHandler<K, V> put(K k, V v) {
+    findFirstStore().ifPresent(s -> s.put(k, v));
     return this;
   }
-  public KeyValueStoreHandler<K, V> putIfAbsent(K k,V v) {
-    findFirstStore().ifPresent(s->s.putIfAbsent(k,v));
+
+  public KeyValueStoreHandler<K, V> putIfAbsent(K k, V v) {
+    findFirstStore().ifPresent(s -> s.putIfAbsent(k, v));
     return this;
   }
-  public KeyValueStoreHandler<K, V> put(List<KeyValue<K,V>> kvList) {
-    findFirstStore().ifPresent(s->s.putAll(kvList));
+
+  public KeyValueStoreHandler<K, V> put(List<KeyValue<K, V>> kvList) {
+    findFirstStore().ifPresent(s -> s.putAll(kvList));
     return this;
   }
 
   private Optional<TopologyDescription.Subtopology> findSub(String topic) {
     TopologyDescription topDsc = ctx.toppology();
-
     for (TopologyDescription.Subtopology subtop : topDsc.subtopologies()) {
       for (TopologyDescription.Node node : subtop.nodes()) {
         if (node instanceof InternalTopologyBuilder.Sink) {
@@ -104,6 +108,7 @@ public class KeyValueStoreHandler<K extends SpecificRecord, V extends SpecificRe
     }
     return Optional.empty();
   }
+
 
   /**
    * method for returning to context and call other entities.
