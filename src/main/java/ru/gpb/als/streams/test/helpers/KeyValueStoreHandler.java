@@ -1,6 +1,7 @@
 package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.streams.KeyValue;
 import org.apache.kafka.streams.TopologyDescription;
@@ -25,7 +26,7 @@ import java.util.Set;
  *            <p>
  *            Created by Boris Zhguchev on 12/09/2018
  */
-public class KeyValueStoreHandler<K extends SpecificRecord, V extends SpecificRecord> {
+public class KeyValueStoreHandler<K extends SpecificRecordBase, V extends SpecificRecordBase> {
   private String topic;
   private Class<K> clzzKey;
   private Class<V> clzzVal;

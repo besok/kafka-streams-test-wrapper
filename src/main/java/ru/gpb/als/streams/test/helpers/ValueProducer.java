@@ -1,6 +1,7 @@
 package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.specific.SpecificRecordBase;
 
 import java.util.Objects;
 
@@ -17,8 +18,8 @@ public interface ValueProducer<V> {
   @SuppressWarnings("unchecked")
   default Class<V> getValClass() {
     V v = produce();
-    return (Class<V>)(isNull(v)? SpecificRecord.class:v.getClass());
+    return (Class<V>)(isNull(v)? SpecificRecordBase.class:v.getClass());
   }
 
-  ValueProducer<SpecificRecord> NULL_PRODUCER = ()->null;
+  ValueProducer<SpecificRecordBase> NULL_PRODUCER = ()->null;
 }

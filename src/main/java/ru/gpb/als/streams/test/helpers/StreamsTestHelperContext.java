@@ -1,6 +1,7 @@
 package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.TopologyDescription;
 import org.apache.kafka.streams.TopologyTestDriver;
@@ -59,13 +60,34 @@ public class StreamsTestHelperContext {
    * @param valueProducer producer for generating value
    * @return ConsumerRecordGenerator
    */
-  public <K extends SpecificRecord, V extends SpecificRecord> ConsumerRecordGenerator<K, V> sender(
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> ConsumerRecordGenerator<K, V> sender(
       String topic,
       ValueProducer<K> keyProducer,
       ValueProducer<V> valueProducer
   ) {
     this.latestSender = new ConsumerRecordGenerator<>(topic, keyProducer, valueProducer, this);
     return this.latestSender;
+  }
+
+  /**
+   * generate new sender @see {@link ConsumerRecordGenerator} with @see {@link AvroValueProducer}
+   *
+   * @param topic         topic name
+   * @param keyProducer   producer for generating key
+   * @param valueProducer producer for generating value
+   * @return ConsumerRecordGenerator
+   */
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> CompositeConsumerRecordGenerator<K, V> sender(
+      String topic,
+      Class<K> keyClass,
+      Class<V> valueClass
+  ) {
+
+    return new CompositeConsumerRecordGenerator<>(
+        topic,
+        new AvroValueProducer<>(keyClass),
+        new AvroValueProducer<>(valueClass),
+        this);
   }
 
   /**
@@ -76,7 +98,7 @@ public class StreamsTestHelperContext {
    * @param valType val type
    * @return ProducerRecordHandler
    */
-  public <K extends SpecificRecord, V extends SpecificRecord> ProducerRecordHandler<K, V> receiver(String topic, Class<K> keyType, Class<V> valType) {
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> ProducerRecordHandler<K, V> receiver(String topic, Class<K> keyType, Class<V> valType) {
     this.latestReceiver = new ProducerRecordHandler<>(topic, keyType, valType, this);
     return this.latestReceiver;
   }
@@ -88,7 +110,7 @@ public class StreamsTestHelperContext {
    * @return ProducerRecordHandler
    * @throws IllegalStateException
    */
-  public <K extends SpecificRecord, V extends SpecificRecord> ProducerRecordHandler<K, V> receiver() {
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> ProducerRecordHandler<K, V> receiver() {
     checkForGenerating(this.latestSender);
     this.latestReceiver =
         new ProducerRecordHandler<>(
@@ -107,7 +129,7 @@ public class StreamsTestHelperContext {
    * @param valType val type
    * @return KeyValueStoreHandler
    **/
-  public <K extends SpecificRecord, V extends SpecificRecord> KeyValueStoreHandler<K, V> keeper(String topic, Class<K> keyType, Class<V> valType) {
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> KeyValueStoreHandler<K, V> keeper(String topic, Class<K> keyType, Class<V> valType) {
     this.latestKeeper = new KeyValueStoreHandler<>(topic, keyType, valType, this);
     return this.latestKeeper;
   }
@@ -119,7 +141,7 @@ public class StreamsTestHelperContext {
    * @return KeyValueStoreHandler
    * @throws IllegalStateException
    **/
-  public <K extends SpecificRecord, V extends SpecificRecord> KeyValueStoreHandler<K, V> keeper() {
+  public <K extends SpecificRecordBase, V extends SpecificRecordBase> KeyValueStoreHandler<K, V> keeper() {
     checkForGenerating(this.latestSender);
     Class<K> keyClass = latestSender.getKeyProducer().getValClass();
     Class<V> valClass = latestSender.getValProducer().getValClass();

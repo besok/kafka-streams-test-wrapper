@@ -1,6 +1,7 @@
 package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
@@ -17,7 +18,7 @@ import java.util.stream.IntStream;
  *
  * Created by Boris Zhguchev on 12/09/2018
  */
-public class ProducerRecordHandler<K extends SpecificRecord, V extends SpecificRecord> {
+public class ProducerRecordHandler<K extends SpecificRecordBase, V extends SpecificRecordBase> {
   private String topic;
   private Class<K> clzzKey;
   private Class<V> clzzVal;

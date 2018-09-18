@@ -46,7 +46,6 @@ dependencies {
 
 
     compile('joda-time:joda-time:2.8.1')
-    compile('ru.gpb.als.model.streams:model-streams:0.1')
 
     compile("io.confluent:kafka-schema-registry-client:4.1.1")
     compile("io.confluent:kafka-avro-serializer:4.1.1")
@@ -56,8 +55,9 @@ dependencies {
     compile("org.apache.kafka:kafka-streams-test-utils:2.0.0")
     compile('org.springframework.boot:spring-boot-starter-test')
 
-    compileOnly('org.projectlombok:lombok')
 
+    testCompileOnly('org.projectlombok:lombok')
+    testCompile('ru.gpb.als.model.streams:model-streams:0.1')
 
 
     //resolve deps

@@ -1,6 +1,7 @@
 package ru.gpb.als.streams.test.helpers;
 
 import org.apache.avro.specific.SpecificRecord;
+import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.Serializer;
 import org.apache.kafka.streams.test.ConsumerRecordFactory;
@@ -22,12 +23,12 @@ import java.util.stream.IntStream;
  *
  * Created by Boris Zhguchev on 12/09/2018
  */
-public class ConsumerRecordGenerator<K extends SpecificRecord, V extends SpecificRecord> {
+public class ConsumerRecordGenerator<K extends SpecificRecordBase, V extends SpecificRecordBase> {
   private ValueProducer<K> keyProducer;
   private ValueProducer<V> valProducer;
-  private String topic;
-  private ConsumerRecordFactory<K, V> consumerRecordFactory;
   private StreamsTestHelperContext ctx;
+  protected String topic;
+  protected ConsumerRecordFactory<K, V> consumerRecordFactory;
 
   protected String getTopic() {
     return topic;
