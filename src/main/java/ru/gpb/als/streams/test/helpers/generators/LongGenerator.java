@@ -5,6 +5,7 @@ import org.apache.avro.Schema;
 import java.util.Random;
 
 /**
+ * Field generator for Long @see {@link AvroGeneratorByType}
  * Created by Boris Zhguchev on 24/09/2018
  */
 public class LongGenerator implements AvroGeneratorByType<Long> {

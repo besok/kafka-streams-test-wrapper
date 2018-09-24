@@ -14,7 +14,7 @@ import java.util.stream.IntStream;
  * @param <K> key type for record @see {@link ProducerRecord}
  * @param <V> value type for record @see {@link ProducerRecord}
  *
- *This handler do all action for only one topic.
+ * This handler do all action for only one topic.
  *
  * Created by Boris Zhguchev on 12/09/2018
  */
@@ -36,7 +36,6 @@ public class ProducerRecordHandler<K extends SpecificRecordBase, V extends Speci
    * read a new record from topic
    *
    * */
-
   public ProducerRecord<K, V> read() {
     return ctx.driver.readOutput(topic,
         ctx.serde(clzzKey, true).deserializer(),

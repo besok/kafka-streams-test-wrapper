@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ *
+ * Field generator for Enums @see {@link AvroGeneratorByType}
+ *
  * Created by Boris Zhguchev on 24/09/2018
  */
 public class EnumGenerator<E extends Enum<E>> implements AvroGeneratorByType<Enum<E>> {

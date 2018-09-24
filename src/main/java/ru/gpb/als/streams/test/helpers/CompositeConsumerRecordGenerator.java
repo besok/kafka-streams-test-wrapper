@@ -10,6 +10,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
+ *
+ * Specified @see {@link ConsumerRecordGenerator} for generating values from @see {@link AvroValueProducer}
+ *
+ * @param <K> key type
+ * @param <V> value type
+ *
  * Created by Boris Zhguchev on 18/09/2018
  */
 public class CompositeConsumerRecordGenerator<K extends SpecificRecordBase, V extends SpecificRecordBase> extends ConsumerRecordGenerator<K, V> {
@@ -58,6 +64,15 @@ public class CompositeConsumerRecordGenerator<K extends SpecificRecordBase, V ex
 	return this;
   }
 
+  /**
+   * add rule for needed avro generator
+   *
+   * @param <F> type for generated value(field type)
+   * @param predicate @see {@link FieldUpdaterPredicate}
+   * @param updater @see {@link FieldUpdater}
+   * @param isKey define needed generator
+   * @return this
+   * */
   public<F> CompositeConsumerRecordGenerator<K, V> rule(FieldUpdaterPredicate predicate, FieldUpdater<F> updater, boolean isKey) {
 	if (isKey) {
 	  keyProducer.rule(predicate, updater);

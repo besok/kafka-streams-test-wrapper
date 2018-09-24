@@ -8,6 +8,11 @@ import java.util.function.Predicate;
 
 
 /**
+ *
+ * AvroGenerator implementation @see {@link AvroGenerator}
+ *
+ * @param <T> record or field type. It should be inherited @see {@link SpecificRecordBase}
+ *
  * Created by Boris Zhguchev on 18/09/2018
  */
 public class AvroGeneratorImpl<T extends SpecificRecordBase> implements AvroGenerator<T> {
@@ -29,6 +34,7 @@ public class AvroGeneratorImpl<T extends SpecificRecordBase> implements AvroGene
 	}
 
   }
+
 
   @Override
   public T generate() {
@@ -57,10 +63,24 @@ public class AvroGeneratorImpl<T extends SpecificRecordBase> implements AvroGene
   }
 
 
+  /**
+   * latest generated value
+   * @return previous {@link #combine(Schema.Field, Object)} invocation.
+   * */
   public T generatedValue() {
 	return instance;
   }
 
+
+  /**
+   * add rule for needed avro generator
+   *
+   * @param <F> type for generated value(field type)
+   * @param predicate @see {@link FieldUpdaterPredicate}
+   * @param updater @see {@link FieldUpdater}
+   *
+   * @return this
+   * */
   @SuppressWarnings("unchecked")
   public<F> void rule(FieldUpdaterPredicate predicate, FieldUpdater<F> updater) {
     updaters.add(new FieldUpdateHandler(predicate,updater));

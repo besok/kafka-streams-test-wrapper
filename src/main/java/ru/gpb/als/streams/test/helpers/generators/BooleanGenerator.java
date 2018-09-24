@@ -5,6 +5,8 @@ import org.apache.avro.Schema;
 import java.util.Random;
 
 /**
+ * Field generator for Boolean @see {@link AvroGeneratorByType}
+ *
  * Created by Boris Zhguchev on 24/09/2018
  */
 public class BooleanGenerator implements AvroGeneratorByType<Boolean> {

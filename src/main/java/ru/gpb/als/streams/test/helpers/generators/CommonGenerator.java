@@ -3,10 +3,17 @@ package ru.gpb.als.streams.test.helpers.generators;
 import org.apache.avro.Schema;
 
 /**
+ * It's a major generator for other types. It is an entrance for processing gotten schema.
+ *
+ * @param <V> record type. It throw to next stage for more specific generator @see {@link AvroGeneratorByType}
+ *
  * Created by Boris Zhguchev on 24/09/2018
  */
 public class CommonGenerator<V> implements AvroGeneratorByType<V>{
 
+  /**
+   * @return can return null value
+   * */
   @Override
   @SuppressWarnings("unchecked")
   public V generate(Schema schema) {

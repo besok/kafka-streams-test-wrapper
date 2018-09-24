@@ -21,10 +21,9 @@ import java.util.Set;
  *
  * @param <K> key type for record @see {@link KeyValueStore}
  * @param <V> value type for record @see {@link KeyValueStore}
- *            <p>
- *            <p>
- *            <p>
- *            Created by Boris Zhguchev on 12/09/2018
+ *
+ * Created by Boris Zhguchev on 12/09/2018
+ *
  */
 public class KeyValueStoreHandler<K extends SpecificRecordBase, V extends SpecificRecordBase> {
   private String topic;
@@ -85,6 +84,7 @@ public class KeyValueStoreHandler<K extends SpecificRecordBase, V extends Specif
     findFirstStore().ifPresent(s -> s.put(k, v));
     return this;
   }
+
 
   public KeyValueStoreHandler<K, V> putIfAbsent(K k, V v) {
     findFirstStore().ifPresent(s -> s.putIfAbsent(k, v));

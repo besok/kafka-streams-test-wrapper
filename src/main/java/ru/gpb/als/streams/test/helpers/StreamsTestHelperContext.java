@@ -7,6 +7,7 @@ import org.apache.kafka.streams.TopologyDescription;
 import org.apache.kafka.streams.TopologyTestDriver;
 import ru.gpb.als.streams.test.configuration.TestKafkaAvroSerde;
 
+import java.io.Closeable;
 import java.util.*;
 
 /**
@@ -19,7 +20,7 @@ import java.util.*;
 // TODO: 9/12/2018 Добавить сценарии валидации (посылаем, принимаем и т.п.)
 // TODO: 9/11/2018 Парсинг топологии
 @SuppressWarnings("all")
-public class StreamsTestHelperContext {
+public class StreamsTestHelperContext implements Closeable {
   private StreamsBuilder streamsBuilder;
   private Map<String, Object> streamsPropertiesMap;
   protected TopologyTestDriver driver;
@@ -154,6 +155,7 @@ public class StreamsTestHelperContext {
     if (Objects.isNull(o))
       throw new IllegalStateException("impossible generate new entity because there isn't previous state operation, for example [.sender(...)]");
   }
+
 
   public void close() {
     driver.close();

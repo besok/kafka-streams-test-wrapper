@@ -10,6 +10,7 @@ import static java.util.Objects.*;
 /**
  * Functional interface for new objects generating.
  * @param <V> type for generating object.
+ *
  * Created by Boris Zhguchev on 12/09/2018
  */
 public interface ValueProducer<V> {

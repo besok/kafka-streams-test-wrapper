@@ -8,6 +8,8 @@ import static java.lang.String.join;
 import static java.lang.String.valueOf;
 
 /**
+ * Field generator for String @see {@link AvroGeneratorByType}
+ *
  * Created by Boris Zhguchev on 24/09/2018
  */
 public class StringGenerator implements AvroGeneratorByType<String> {

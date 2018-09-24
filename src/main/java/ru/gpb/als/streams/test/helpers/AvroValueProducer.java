@@ -1,14 +1,16 @@
 package ru.gpb.als.streams.test.helpers;
 
-import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecordBase;
 import ru.gpb.als.streams.test.helpers.generators.AvroGeneratorImpl;
 import ru.gpb.als.streams.test.helpers.generators.FieldUpdater;
 import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
 
-import java.util.function.Predicate;
 
 /**
+ * Default avro producer for avro values. @see {@link ValueProducer}
+ *
+ * @param <V> value type
+ *
  * Created by Boris Zhguchev on 18/09/2018
  */
 public class AvroValueProducer<V extends SpecificRecordBase> implements ValueProducer<V> {
@@ -24,18 +26,23 @@ public class AvroValueProducer<V extends SpecificRecordBase> implements ValuePro
 	return generator.generate();
   }
 
+  /**
+   * latest sending value
+   * */
   public V producedValue() {
 	return generator.generatedValue();
   }
 
-  public AvroGeneratorImpl<V> getGenerator() {
-	return generator;
-  }
 
-  public void setGenerator(AvroGeneratorImpl<V> generator) {
-	this.generator = generator;
-  }
-
+  /**
+   * add rule for needed avro generator
+   *
+   * @param <F> type for generated value(field type)
+   * @param predicate @see {@link FieldUpdaterPredicate}
+   * @param updater @see {@link FieldUpdater}
+   *
+   * @return this
+   * */
   public<F> AvroValueProducer<V> rule(FieldUpdaterPredicate predicate, FieldUpdater<F> updater) {
 	generator.rule(predicate, updater);
 	return this;
