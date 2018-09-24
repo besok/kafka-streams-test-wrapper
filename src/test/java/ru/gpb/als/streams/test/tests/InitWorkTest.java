@@ -1,11 +1,6 @@
 package ru.gpb.als.streams.test.tests;
 
-import org.apache.avro.Schema;
-import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.junit.Assert;
-import org.junit.ClassRule;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,17 +8,16 @@ import ru.gpb.als.model.Country;
 import ru.gpb.als.model.Tuple1;
 import ru.gpb.als.streams.test.BaseStreamsTest;
 import ru.gpb.als.streams.test.StreamsTestHelper;
-import ru.gpb.als.streams.test.data.StreamsUtils;
 import ru.gpb.als.streams.test.helpers.StreamsTestHelperContext;
-import ru.gpb.als.streams.test.helpers.generators.AvroGenerator;
+import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
 
 import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.Assert.*;
-import static ru.gpb.als.streams.test.data.StreamsUtils.*;
 import static ru.gpb.als.streams.test.data.StreamsUtils.H.*;
 import static ru.gpb.als.streams.test.helpers.ValueProducer.NULL_PRODUCER;
+import static ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate.*;
 
 /**
  * Created by Boris Zhguchev on 18/09/2018
@@ -31,14 +25,15 @@ import static ru.gpb.als.streams.test.helpers.ValueProducer.NULL_PRODUCER;
 public class InitWorkTest extends BaseStreamsTest {
 
   @Autowired
-  private StreamsBuilder builder;
-  @Autowired
   @Qualifier("streams")
   private Properties properties;
+  @Autowired
+  private StreamsBuilder builder;
   private int sequencer = 0;
-
   private String store = "internal.country_group_by_ask";
   private String stream = "internal.country";
+
+
 
   @Test
   public void shouldLastWinWithManuallyTest() {
@@ -64,6 +59,7 @@ public class InitWorkTest extends BaseStreamsTest {
 	Country last =
 	  ctx
 		.sender(stream, Tuple1.class, Country.class)
+		.rule(name("ask_id"),v -> 1, false)
 		.send(5).last().value();
 
 	Optional<Country> countryOpt =

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 
 /**
  *
- * Records Generator. It is based on @see {@link ConsumerRecordGenerator}
+ * Records AvroGenerator. It is based on @see {@link ConsumerRecordGenerator}
  * @param <K> key type for record @see {@link ConsumerRecord}
  * @param <V> value type for record @see {@link ConsumerRecord}
  *

@@ -3,9 +3,11 @@ package ru.gpb.als.streams.test.helpers;
 import org.apache.avro.Schema;
 import org.apache.avro.specific.SpecificRecordBase;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import ru.gpb.als.streams.test.helpers.generators.AvroGenerator;
+import ru.gpb.als.streams.test.helpers.generators.FieldUpdater;
+import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Created by Boris Zhguchev on 18/09/2018
@@ -16,43 +18,52 @@ public class CompositeConsumerRecordGenerator<K extends SpecificRecordBase, V ex
   private AvroValueProducer<V> valProducer;
 
 
-  @Override
-  public ConsumerRecord<byte[], byte[]> generate() {
-    return super.consumerRecordFactory.create(keyProducer.produce(), valProducer.produce());
+  protected CompositeConsumerRecordGenerator(
+	String topic, ValueProducer<K> keyProducer, ValueProducer<V> valProducer, StreamsTestHelperContext ctx) {
+	super(topic, keyProducer, valProducer, ctx);
+	this.keyProducer = (AvroValueProducer<K>) keyProducer;
+	this.valProducer = (AvroValueProducer<V>) valProducer;
   }
 
-  public ConsumerRecord<K,V> last() {
-    return new ConsumerRecord<>("",0,0,keyProducer.producedValue(), valProducer.producedValue());
+  @Override
+  public ConsumerRecord<byte[], byte[]> generate() {
+	return super.consumerRecordFactory.create(keyProducer.produce(), valProducer.produce());
+  }
+
+  public ConsumerRecord<K, V> last() {
+	return new ConsumerRecord<>("", 0, 0, keyProducer.producedValue(), valProducer.producedValue());
   }
 
   @Override
   public CompositeConsumerRecordGenerator<K, V> send() {
-    super.send();
-    return this;
+	super.send();
+	return this;
   }
 
   @Override
   public CompositeConsumerRecordGenerator<K, V> send(int batch) {
-    super.send(batch);
-    return this;
+	super.send(batch);
+	return this;
   }
 
   @Override
   public CompositeConsumerRecordGenerator<K, V> send(ConsumerRecord<byte[], byte[]> record) {
-    super.send(record);
-    return this;
+	super.send(record);
+	return this;
   }
 
   @Override
   public CompositeConsumerRecordGenerator<K, V> send(List<ConsumerRecord<byte[], byte[]>> records) {
-    super.send(records);
-    return this;
+	super.send(records);
+	return this;
   }
 
-  protected CompositeConsumerRecordGenerator(
-      String topic, ValueProducer<K> keyProducer, ValueProducer<V> valProducer, StreamsTestHelperContext ctx) {
-    super(topic, keyProducer, valProducer, ctx);
-    this.keyProducer = (AvroValueProducer<K>) keyProducer;
-    this.valProducer = (AvroValueProducer<V>) valProducer;
+  public<F> CompositeConsumerRecordGenerator<K, V> rule(FieldUpdaterPredicate predicate, FieldUpdater<F> updater, boolean isKey) {
+	if (isKey) {
+	  keyProducer.rule(predicate, updater);
+	} else {
+	  valProducer.rule(predicate, updater);
+	}
+	return this;
   }
 }
