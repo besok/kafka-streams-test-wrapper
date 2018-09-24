@@ -17,6 +17,8 @@ import ru.gpb.als.model.collectors.CountryCustomerCollector;
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 
+import static org.apache.kafka.streams.kstream.Materialized.*;
+
 
 /**
  * Created by Boris Zhguchev on 23/08/2018
@@ -32,14 +34,13 @@ public class CUlimitWorker {
   public void process() {
 
     KStream<Key, Envelope> culimits = builder.stream("postgres.output.culimit");
-    KTable<Tuple1, CountryCustomerCollector> customersByCountry =
-        builder.table("internal.customers_group_by_country");
+    KTable<Tuple1, CountryCustomerCollector> customers = builder.table("internal.customers_group_by_country");
 
     culimits
         .map(this::map)
         .groupByKey()
         .aggregate(this::createCollector, StreamsUtils.H::lastWin)
-        .leftJoin(customersByCountry, this::join,Materialized.as("merge.culimit_w_customers_aggr"))
+        .leftJoin(customers, this::join,as("merge.culimit_w_customers_aggr"))
         .toStream()
         .peek(StreamsUtils.mark("culimit-by-country")::peek)
         .to("merge.culimit_w_customers_aggr");

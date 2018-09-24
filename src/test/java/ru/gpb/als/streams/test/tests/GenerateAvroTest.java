@@ -15,7 +15,7 @@ import static ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate.*
 /**
  * Created by Boris Zhguchev on 18/09/2018
  */
-public class BaseAvroTest {
+public class GenerateAvroTest {
 
   @Test
   public void test() {

@@ -1,14 +1,21 @@
 package ru.gpb.als.streams.test.tests;
 
+import org.apache.avro.Schema;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import postgres.output.culimit.Envelope;
+import postgres.output.culimit.Key;
+import postgres.output.culimit.Value;
 import ru.gpb.als.model.Country;
+import ru.gpb.als.model.Customer;
 import ru.gpb.als.model.Tuple1;
+import ru.gpb.als.model.collectors.CUlimitCustomerCollector;
 import ru.gpb.als.streams.test.BaseStreamsTest;
 import ru.gpb.als.streams.test.StreamsTestHelper;
 import ru.gpb.als.streams.test.helpers.StreamsTestHelperContext;
+import ru.gpb.als.streams.test.helpers.generators.FieldUpdater;
 import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
 
 import java.util.Optional;
@@ -17,12 +24,13 @@ import java.util.Properties;
 import static org.junit.Assert.*;
 import static ru.gpb.als.streams.test.data.StreamsUtils.H.*;
 import static ru.gpb.als.streams.test.helpers.ValueProducer.NULL_PRODUCER;
+import static ru.gpb.als.streams.test.helpers.generators.FieldUpdater.*;
 import static ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate.*;
 
 /**
  * Created by Boris Zhguchev on 18/09/2018
  */
-public class InitWorkTest extends BaseStreamsTest {
+public class InitCommonTest extends BaseStreamsTest {
 
   @Autowired
   @Qualifier("streams")
@@ -32,7 +40,6 @@ public class InitWorkTest extends BaseStreamsTest {
   private int sequencer = 0;
   private String store = "internal.country_group_by_ask";
   private String stream = "internal.country";
-
 
 
   @Test
@@ -59,7 +66,7 @@ public class InitWorkTest extends BaseStreamsTest {
 	Country last =
 	  ctx
 		.sender(stream, Tuple1.class, Country.class)
-		.rule(name("ask_id"),v -> 1, false)
+		.rule(name("ask_id"), v -> 1, false)
 		.send(5).last().value();
 
 	Optional<Country> countryOpt =
@@ -72,6 +79,29 @@ public class InitWorkTest extends BaseStreamsTest {
 
   }
 
+  @Test
+  public void complexJoinWithGeneratedAvroTest() {
+	Optional<CUlimitCustomerCollector> valOpt = StreamsTestHelper.run(builder, properties)
+	  .sender("internal.customer", Tuple1.class, Customer.class)
+	  .rule(name("country_id"), through(1), false)
+	  .send(10).pipe()
+	  .sender("postgres.output.culimit", Key.class, Envelope.class)
+	  .rule(name("after"), setCountryId(), false)
+	  .send().pipe()
+	  .keeper("merge.culimit_w_customers_aggr", Tuple1.class, CUlimitCustomerCollector.class)
+	  .find(defaultTuple1(), "merge.culimit_w_customers_aggr");
+
+
+	assertNotNull(valOpt);
+	assertEquals(10, valOpt.get().getValues().size());
+  }
+
+  private FieldUpdater<Value> setCountryId() {
+	return oldVal -> {
+	  oldVal.setCountryId(1);
+	  return oldVal;
+	};
+  }
   private Country newCountryWithFixAskId() {
 	int next = ++sequencer;
 	return
@@ -83,5 +113,7 @@ public class InitWorkTest extends BaseStreamsTest {
 		.setSadkoId(next)
 		.build();
   }
-
+  private Tuple1 defaultTuple1() {
+	return Tuple1.newBuilder().setValue1("1").build();
+  }
 }

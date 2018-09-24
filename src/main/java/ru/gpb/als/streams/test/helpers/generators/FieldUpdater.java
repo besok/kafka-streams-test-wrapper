@@ -11,5 +11,8 @@ public interface FieldUpdater<V> {
 
   V update(V oldVal);
 
+  static  <V> FieldUpdater<V> through(V val){
+    return oldVal -> val;
+  }
 
 }
