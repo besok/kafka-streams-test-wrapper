@@ -12,6 +12,7 @@ import ru.gpb.als.model.Country;
 import ru.gpb.als.model.Customer;
 import ru.gpb.als.model.Tuple1;
 import ru.gpb.als.model.collectors.CUlimitCustomerCollector;
+import ru.gpb.als.model.collectors.CountryCustomerCollector;
 import ru.gpb.als.streams.test.BaseStreamsTest;
 import ru.gpb.als.streams.test.StreamsTestHelper;
 import ru.gpb.als.streams.test.helpers.StreamsTestHelperContext;
@@ -51,7 +52,7 @@ public class InitCommonTest extends BaseStreamsTest {
 		.send(5)
 		.pipe()
 		.keeper(store, Tuple1.class, Country.class)
-		.find(wrap("1"));
+		.find(defaultTuple1());
 	--sequencer;
 
 	assertTrue(countryOpt.isPresent());
@@ -66,8 +67,9 @@ public class InitCommonTest extends BaseStreamsTest {
 	Country last =
 	  ctx
 		.sender(stream, Tuple1.class, Country.class)
-		.rule(name("ask_id"), v -> 1, false)
-		.send(5).last().value();
+		.rule(name("ask_id"), through(10), false)
+		.send(5)
+		.last().value();
 
 	Optional<Country> countryOpt =
 	  ctx
@@ -81,15 +83,17 @@ public class InitCommonTest extends BaseStreamsTest {
 
   @Test
   public void complexJoinWithGeneratedAvroTest() {
-	Optional<CUlimitCustomerCollector> valOpt = StreamsTestHelper.run(builder, properties)
-	  .sender("internal.customer", Tuple1.class, Customer.class)
-	  .rule(name("country_id"), through(1), false)
-	  .send(10).pipe()
-	  .sender("postgres.output.culimit", Key.class, Envelope.class)
-	  .rule(name("after"), setCountryId(), false)
-	  .send().pipe()
-	  .keeper("merge.culimit_w_customers_aggr", Tuple1.class, CUlimitCustomerCollector.class)
-	  .find(defaultTuple1(), "merge.culimit_w_customers_aggr");
+
+	Optional<CUlimitCustomerCollector> valOpt =
+	  StreamsTestHelper.run(builder, properties)
+		.sender("internal.customer", Tuple1.class, Customer.class)
+		.rule(name("country_id"), through(1), false)
+		.send(10).pipe()
+		.sender("postgres.output.culimit", Key.class, Envelope.class)
+		.rule(name("after"), setCountryId(), false)
+		.send().pipe()
+		.keeper("merge.culimit_w_customers_aggr", Tuple1.class, CUlimitCustomerCollector.class)
+		.find(defaultTuple1(), "merge.culimit_w_customers_aggr");
 
 
 	assertNotNull(valOpt);
@@ -102,6 +106,7 @@ public class InitCommonTest extends BaseStreamsTest {
 	  return oldVal;
 	};
   }
+
   private Country newCountryWithFixAskId() {
 	int next = ++sequencer;
 	return
@@ -113,6 +118,7 @@ public class InitCommonTest extends BaseStreamsTest {
 		.setSadkoId(next)
 		.build();
   }
+
   private Tuple1 defaultTuple1() {
 	return Tuple1.newBuilder().setValue1("1").build();
   }

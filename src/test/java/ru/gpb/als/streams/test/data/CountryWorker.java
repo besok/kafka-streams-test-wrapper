@@ -6,8 +6,11 @@ import org.apache.kafka.streams.kstream.KStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.gpb.als.model.Country;
+import ru.gpb.als.streams.test.data.StreamsUtils.H;
 
 import javax.annotation.PostConstruct;
+
+import static ru.gpb.als.streams.test.data.StreamsUtils.H.*;
 
 /**
  * @author Boris Zhguchev
@@ -25,8 +28,8 @@ public class CountryWorker {
     KStream<?, Country> countries = builder.stream("internal.country");
 
     countries
-        .groupBy((k,v)->StreamsUtils.H.wrap(v.getAskId().toString()))
-        .aggregate(Country::new, StreamsUtils.H::lastWin)
+        .groupBy((k,v)->wrap(v.getAskId()))
+        .aggregate(Country::new, H::lastWin)
         .toStream()
         .peek(StreamsUtils.mark("country-ask")::peek)
         .to("internal.country_group_by_ask");
