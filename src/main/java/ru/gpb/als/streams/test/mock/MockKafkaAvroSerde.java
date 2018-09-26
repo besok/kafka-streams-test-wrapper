@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  *
- * Default serde. It is needed for injection @see {@link MockInMemorySchemaRegistryClient}
+ * Default serde. It is needed for injection @see {@link MockLightSchemaRegistryClient}
  * Created by Boris Zhguchev on 03/09/2018
  */
 public class MockKafkaAvroSerde<T extends SpecificRecord> implements Serde<T> {
