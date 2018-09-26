@@ -1,8 +1,7 @@
 package ru.gpb.als.streams.test;
 
-import org.apache.avro.specific.SpecificRecord;
 import org.apache.kafka.streams.StreamsBuilder;
-import ru.gpb.als.streams.test.helpers.StreamsTestHelperContext;
+import ru.gpb.als.streams.test.context.StreamsTestHelperContext;
 
 import java.util.Objects;
 import java.util.Properties;

@@ -1,6 +1,5 @@
 package ru.gpb.als.streams.test.tests;
 
-import org.apache.avro.Schema;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,26 +11,24 @@ import ru.gpb.als.model.Country;
 import ru.gpb.als.model.Customer;
 import ru.gpb.als.model.Tuple1;
 import ru.gpb.als.model.collectors.CUlimitCustomerCollector;
-import ru.gpb.als.model.collectors.CountryCustomerCollector;
-import ru.gpb.als.streams.test.BaseStreamsTest;
+import ru.gpb.als.streams.test.BaseAvroSchemaRegistryKafkaStreamsTest;
 import ru.gpb.als.streams.test.StreamsTestHelper;
-import ru.gpb.als.streams.test.helpers.StreamsTestHelperContext;
-import ru.gpb.als.streams.test.helpers.generators.FieldUpdater;
-import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
+import ru.gpb.als.streams.test.context.StreamsTestHelperContext;
+import ru.gpb.als.streams.test.context.generators.FieldUpdater;
 
 import java.util.Optional;
 import java.util.Properties;
 
 import static org.junit.Assert.*;
 import static ru.gpb.als.streams.test.data.StreamsUtils.H.*;
-import static ru.gpb.als.streams.test.helpers.ValueProducer.NULL_PRODUCER;
-import static ru.gpb.als.streams.test.helpers.generators.FieldUpdater.*;
-import static ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate.*;
+import static ru.gpb.als.streams.test.context.ValueProducer.NULL_PRODUCER;
+import static ru.gpb.als.streams.test.context.generators.FieldUpdater.*;
+import static ru.gpb.als.streams.test.context.generators.FieldUpdaterPredicate.*;
 
 /**
  * Created by Boris Zhguchev on 18/09/2018
  */
-public class InitCommonTest extends BaseStreamsTest {
+public class InitCommonTest extends BaseAvroSchemaRegistryKafkaStreamsTest {
 
   @Autowired
   @Qualifier("streams")

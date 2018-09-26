@@ -1,17 +1,14 @@
 package ru.gpb.als.streams.test.tests;
 
-import org.junit.Assert;
 import org.junit.Test;
 import ru.gpb.als.model.Country;
-import ru.gpb.als.streams.test.helpers.generators.AvroGeneratorImpl;
-import ru.gpb.als.streams.test.helpers.generators.FieldUpdater;
-import ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate;
+import ru.gpb.als.streams.test.context.generators.AvroGeneratorImpl;
 
 import static java.lang.String.join;
 import static java.lang.String.valueOf;
 import static org.junit.Assert.*;
-import static ru.gpb.als.streams.test.helpers.generators.FieldUpdater.*;
-import static ru.gpb.als.streams.test.helpers.generators.FieldUpdaterPredicate.*;
+import static ru.gpb.als.streams.test.context.generators.FieldUpdater.*;
+import static ru.gpb.als.streams.test.context.generators.FieldUpdaterPredicate.*;
 
 /**
  * Created by Boris Zhguchev on 18/09/2018
