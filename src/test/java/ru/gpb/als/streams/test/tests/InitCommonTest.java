@@ -11,7 +11,7 @@ import ru.gpb.als.model.Country;
 import ru.gpb.als.model.Customer;
 import ru.gpb.als.model.Tuple1;
 import ru.gpb.als.model.collectors.CUlimitCustomerCollector;
-import ru.gpb.als.streams.test.BaseAvroSchemaRegistryKafkaStreamsTest;
+import ru.gpb.als.streams.test.BaseStreamsTest;
 import ru.gpb.als.streams.test.StreamsTestHelper;
 import ru.gpb.als.streams.test.context.StreamsTestHelperContext;
 import ru.gpb.als.streams.test.context.generators.FieldUpdater;
@@ -28,7 +28,7 @@ import static ru.gpb.als.streams.test.context.generators.FieldUpdaterPredicate.*
 /**
  * Created by Boris Zhguchev on 18/09/2018
  */
-public class InitCommonTest extends BaseAvroSchemaRegistryKafkaStreamsTest {
+public class InitCommonTest extends BaseStreamsTest {
 
   @Autowired
   @Qualifier("streams")

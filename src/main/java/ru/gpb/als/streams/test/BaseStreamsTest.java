@@ -22,7 +22,7 @@ import java.nio.file.Paths;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MockConfig.class)
-public class BaseAvroSchemaRegistryKafkaStreamsTest {
+public class BaseStreamsTest {
 
 
   /**
