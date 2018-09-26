@@ -23,7 +23,7 @@ import static java.util.stream.Collectors.toList;
  * <p>
  * Created by Boris Zhguchev on 03/09/2018
  */
-public class MockLightSchemaRegistryClient
+public class MockSimpleSchemaRegistryClient
   implements SchemaRegistryClient {
 
   private static AtomicInteger sequencer = new AtomicInteger(0);

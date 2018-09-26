@@ -7,12 +7,12 @@ import java.util.Map;
 
 /**
  *
- * Default serializer. It is needed for injection @see {@link MockLightSchemaRegistryClient}
+ * Default serializer. It is needed for injection @see {@link MockSimpleSchemaRegistryClient}
  * Created by Boris Zhguchev on 03/09/2018
  */
 public class MockKafkaAvroSerializer extends KafkaAvroSerializer {
   public MockKafkaAvroSerializer() {
-    super(new MockLightSchemaRegistryClient());
+    super(new MockSimpleSchemaRegistryClient());
   }
 
   @Override
