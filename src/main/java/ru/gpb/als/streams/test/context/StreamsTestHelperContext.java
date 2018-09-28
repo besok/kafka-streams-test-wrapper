@@ -42,7 +42,7 @@ public class StreamsTestHelperContext implements AutoCloseable {
     return serde;
   }
 
-  protected TopologyDescription toppology() {
+  public TopologyDescription toppology() {
     return streamsBuilder.build().describe();
   }
 

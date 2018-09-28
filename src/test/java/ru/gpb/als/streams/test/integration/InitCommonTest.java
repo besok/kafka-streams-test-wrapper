@@ -1,4 +1,4 @@
-package ru.gpb.als.streams.test.tests;
+package ru.gpb.als.streams.test.integration;
 
 import org.apache.kafka.streams.StreamsBuilder;
 import org.junit.Test;
@@ -35,6 +35,7 @@ public class InitCommonTest extends BaseStreamsTest {
   private Properties properties;
   @Autowired
   private StreamsBuilder builder;
+
   private int sequencer = 0;
   private String store = "internal.country_group_by_ask";
   private String stream = "internal.country";

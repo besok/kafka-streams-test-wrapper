@@ -1,4 +1,4 @@
-package ru.gpb.als.streams.test.tests;
+package ru.gpb.als.streams.test.integration;
 
 import org.junit.Test;
 import ru.gpb.als.model.Country;

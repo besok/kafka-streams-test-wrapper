@@ -10,9 +10,7 @@ import java.util.HashMap;
  */
 public class MapGenerator<K,V> implements AvroGeneratorByType<HashMap<K,V>> {
 
-  // now we don't need do this implemenation
+  // NO-OP , in order to not to write impl - don't need now.
   @Override
-  public HashMap<K, V> generate(Schema schema) {
-	return new HashMap<>();
-  }
+  public HashMap<K, V> generate(Schema schema) { return new HashMap<>(); }
 }
