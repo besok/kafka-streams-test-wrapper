@@ -22,7 +22,7 @@ public interface FieldUpdaterPredicate {
   static FieldUpdaterPredicate name(String name){
     return field -> field.name().equals(name);
   }
-
+  static FieldUpdaterPredicate all(){return f -> true;}
 
 
 }
