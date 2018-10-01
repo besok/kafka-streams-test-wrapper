@@ -65,7 +65,7 @@ public class InitCommonTest extends BaseStreamsTest {
 	Country last =
 	  ctx
 		.sender(stream, Tuple1.class, Country.class)
-		.rule(name("ask_id"), through(10), false)
+		.rule(name("ask_id"), constant(10), false)
 		.send(5)
 		.last().value();
 
@@ -85,7 +85,7 @@ public class InitCommonTest extends BaseStreamsTest {
 	Optional<CUlimitCustomerCollector> valOpt =
 	  StreamsTestHelper.run(builder, properties)
 		.sender("internal.customer", Tuple1.class, Customer.class)
-		.rule(name("country_id"), through(1), false)
+		.rule(name("country_id"), constant(1), false)
 		.send(10).pipe()
 		.sender("postgres.output.culimit", Key.class, Envelope.class)
 		.rule(name("after"), setCountryId(), false)

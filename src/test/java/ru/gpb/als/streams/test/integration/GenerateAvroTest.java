@@ -20,10 +20,10 @@ public class GenerateAvroTest {
 
 	AvroGeneratorImpl<Country> g = new AvroGeneratorImpl<>(Country.class);
 
-	g.rule(name("ask_id"), through(1));
-	g.rule(name("name"), through("name"));
-	g.rule(name("sadko_id"), through(10));
-	g.rule(name("id"), through(0));
+	g.rule(name("ask_id"), constant(1));
+	g.rule(name("name"), constant("name"));
+	g.rule(name("sadko_id"), constant(10));
+	g.rule(name("id"), constant(0));
 
 	Country generatedCountry = g.generate();
 	Country expectedCountry = Country.newBuilder().setId(0).setAskId(1).setSadkoId(10).setName("name").build();
