@@ -17,7 +17,6 @@ import java.util.*;
 
 // TODO: 9/12/2018 Добавить историю...
 // TODO: 9/12/2018 Добавить сценарии валидации (посылаем, принимаем и т.п.)
-// TODO: 9/11/2018 Парсинг топологии
 // TODO: 9/25/2018 Добавить параллельность для сендеров
 @SuppressWarnings("all")
 public class StreamsTestHelperContext implements AutoCloseable {

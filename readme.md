@@ -67,3 +67,6 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
             .send(10);                    
                                              
 ```
+
+# License
+This project is licensed under the terms of the MIT license.
