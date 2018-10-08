@@ -68,5 +68,5 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
                                              
 ```
 
-# License
+#### License
 This project is licensed under the terms of the MIT license.
