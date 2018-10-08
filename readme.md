@@ -10,22 +10,27 @@ work in case if you need kafka streams, avro classes as model and schema-registr
 testCompile("ru.gpb.als.streams:streams-test-support:0.1")
 ```
 #### Usage examples:
-
-```
   
-    // generate records .
-    // you can do it for banch or single record
+##### Generate and send records
+* generate batch or single records
+* generate and send records to topic.
+   
+```
     List<ConsumerRecord<byte[], byte[]>> records = StreamsTestHelper
             .run(builder, properties)
             .sender("topic", () -> null, () -> newValue())
             .generate(10);
      
-     // generate and send records to topic.
     StreamsTestHelper
         .run(builder, properties)
         .sender("topic", () -> null, () -> newValue())
         .send(10);       
-        
+```
+
+##### Send and receive records
+* you can switch from sender to receiver or keeper using pipe() method.
+
+```        
      // generate , send and receive record  
     ProducerRecord<Key, Value> record = StreamsTestHelper
         .run(builder, properties)
@@ -43,27 +48,30 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
         .pipe()
         .keeper("topic-next",Key.class,Value.class)
         .find(new Key("1")); 
-        
-    // you can use default avro generator for sending
+```
+
+##### Avro generation
+* if you have avro classes you can use avro generator
+* using rules for processing fields 
+  * using static import for FieldUpdaterPredicate or FieldUpdater you can simplify rules
+```        
     List<ConsumerRecord<byte[], byte[]>> records = StreamsTestHelper
             .run(builder, properties)
             .sender("topic", Key.class, Value.class)
             .generate(10);
             
-  // add rules for processing needed fields 
     List<ConsumerRecord<byte[], byte[]>> records = StreamsTestHelper
             .run(builder, properties)
             .sender("topic", Key.class, Value.class)
-            // simplify it using default predicate FieldUpdaterPredicate.name(..)
-            .rule(field -> field.name().equals("needed_field"), v -> 1, false) 
+            .rule(
+                field -> field.name().equals("field"), 
+                v -> 10, false) 
             .send(10); 
   
-  // add rules for processing needed fields 
     List<ConsumerRecord<byte[], byte[]>> records = StreamsTestHelper
             .run(builder, properties)
             .sender("topic", Key.class, Value.class)
-            // simplify it using default predicate FieldUpdater.through(..)
-            .rule(FieldUpdaterPredicate.name(..), v -> 10, false) 
+            .rule(name("field"), constant(10), false) 
             .send(10);                    
                                              
 ```
