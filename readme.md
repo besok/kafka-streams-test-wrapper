@@ -31,7 +31,6 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
 * you can switch from sender to receiver or keeper using pipe() method.
 
 ```        
-     // generate , send and receive record  
     ProducerRecord<Key, Value> record = StreamsTestHelper
         .run(builder, properties)
         .sender("topic", () -> null, () -> newValue())
@@ -40,7 +39,6 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
         .receiver("topic-next", Key.class, Value.class)
         .read();        
            
-     // generate, send and try to find new value in store(for stores and ktables)      
     Optional<Value> record = StreamsTestHelper
         .run(builder, properties)
         .sender("topic", () -> null, () -> newValue())
