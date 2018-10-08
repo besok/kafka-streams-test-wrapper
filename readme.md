@@ -52,6 +52,7 @@ testCompile("ru.gpb.als.streams:streams-test-support:0.1")
 * if you have avro classes you can use avro generator
 * using rules for processing fields 
   * using static import for FieldUpdaterPredicate or FieldUpdater you can simplify rules
+  
 ```        
     List<ConsumerRecord<byte[], byte[]>> records = StreamsTestHelper
             .run(builder, properties)
