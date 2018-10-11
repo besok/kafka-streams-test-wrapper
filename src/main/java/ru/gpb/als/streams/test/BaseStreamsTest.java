@@ -23,8 +23,8 @@ import java.nio.file.Paths;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = MockConfig.class)
 public class BaseStreamsTest {
-  // TODO: 9/28/2018 Написать тесты без спринга(онли юнит)
-  // TODO: 9/28/2018 Перенести все avro файлы внутрь приложения в тестовый блок
+  // FIXME: 9/28/2018 Написать тесты без спринга(онли юнит)
+  // FIXME: 9/28/2018 Перенести все avro файлы внутрь приложения в тестовый блок
 
   /**
    * by default kafka can't do normal collaboration with Windows file system,

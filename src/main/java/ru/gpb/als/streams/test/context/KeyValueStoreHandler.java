@@ -56,7 +56,7 @@ public class KeyValueStoreHandler<K extends SpecificRecordBase, V extends Specif
    * @param key key
    * @return Optional
    */
-  // TODO: 9/11/2018 Если у нас несколько сторов в стриме с 1 типом KV
+  // FIXME: 9/11/2018 Если у нас несколько сторов в стриме с 1 типом KV
   public Optional<V> find(K key) {
     return findFirstStore().map(s -> s.get(key));
   }

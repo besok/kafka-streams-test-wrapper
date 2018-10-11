@@ -35,7 +35,7 @@ public class ArrayGeneratorTest {
 
   }
 
-  // TODO: 9/28/2018  переписать тест без экспектед
+  // FIXME: 9/28/2018  переписать тест без экспектед
   @Test(expected = AvroRuntimeException.class)
   public void generateArrayRecord() {
     Schema record = Schema.createRecord("", "", "", false);
