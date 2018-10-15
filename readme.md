@@ -1,5 +1,5 @@
 #### Description:
-StreamsTestHelper serves for doing process unit tests for streams more easily.
+StreamsTestHelper makes easy test process for kafka-streams.
 It based on TopologyTestDriver and 
 work in case if you need kafka streams, avro classes as model and schema-registry.
 
