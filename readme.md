@@ -7,7 +7,7 @@ work in case if you need kafka streams, avro classes as model and schema-registr
 * all your tests using this lib should be inherited from BaseStreamsTest
 * build project to your local maven repo and add gradle dependency :)
 ```
-testCompile("ru.gpb.als.streams:streams-test-support:0.1")
+testCompile("ru.ru.besok.kafka.streams:streams-test-support:0.1")
 ```
 #### Usage examples:
   

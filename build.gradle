@@ -22,7 +22,7 @@ apply plugin: 'io.spring.dependency-management'
 
 
 
-group = 'ru.gpb.als.streams'
+group = 'ru.besok.kafka.streams'
 version = '0.1'
 sourceCompatibility = 1.8
 
